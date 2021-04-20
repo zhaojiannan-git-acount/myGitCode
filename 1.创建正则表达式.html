@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创建正则表达式</title>
+</head>
+<body>
+  <script>
+    //1.创建正则表达式的两种方式
+    //通过调用RegEpx对象的构造函数创建
+    var reg1 = new RegExp(/123/)
+    console.log(reg1);
+    //通过字面量创建
+    var reg2 = /456/
+    console.log(reg2);
+    var reg3=/abc/ //正则表达式里面不需要加引号 不管是数字型还是字符串型
+    //2.test 方法用来检测字符串是否符合要求的规范
+    //  /abc/只要包含abc这个字符串，返回的都是true
+    console.log(reg3.test('abc')); //返回true
+    console.log(reg3.test('abcd'));// 返回true
+    console.log(reg3.test('aabcd')); //返回true
+    console.log('--------------------------------------');
+    var reg4=/^abc/;
+    console.log(reg4.test('abc'));//返回true
+    console.log(reg4.test('abcd'));//返回true
+    console.log(reg4.test('aabcd'));//返回false
+    var reg5=/^abc$/  //精确匹配 要求必须是abc字符串才符合规范
+    console.log(reg5.test('abc')); //返回true
+    console.log(reg5.test('abcd')); //false
+    console.log(reg5.test('aabcd'));//false
+    console.log(reg5.test('abcabc')); //false
+    console.log('----------------------------------------');
+    //字符类：[]表示有一系列字符串可供选择，只要匹配其中一个就可以了,所有可供选择的字符都放在[]内
+    var reg6=/[abc]/ //只要包含有a 或者包含b 或者包含c 都可以返回true
+    console.log(reg6.test('andy'));//true
+    console.log(reg6.test('baby'));//true
+    console.log(reg6.test('color'));//true
+    console.log(reg6.test('red')); //false
+    console.log('------------------------------------------');
+    var reg7=/^[abc]$/ //三选一 只有是a 或者是b 或者是c 这三个字母才返回true
+    console.log(reg7.test('aa'));//false
+    console.log(reg7.test('a'));//true
+    console.log(reg7.test('abc'));//false
+    console.log('-------------------------------------------');
+    var reg8=/^[a-z]$/ //26个英文字母任何一个字母返回true - 表示a 到 z的范围
+    console.log(reg8.test('z'));//true
+    console.log(reg8.test(1));//false
+    console.log(reg8.test('A'));//false
+    console.log('---------------------------------------------');
+    //字符组合
+    var reg9 = /^[a-zA-Z0-9_-]$/ //26个英文字母（大写和小写都可以）0-9 _  - 任何一个返回true
+    console.log(reg9.test('a'));//true
+    console.log(reg9.test('B'));//true
+    console.log(reg9.test(8));//true
+    console.log(reg9.test('-'));//true
+    console.log(reg9.test('_'));//true
+    console.log((reg9.test('!')));//false
+    console.log('----------------------------------------------');
+    //如果括号中里面有^表示取反的意思 千万别和 我们边界符^混淆
+    var reg10 = /^[^a-zA-Z0-9_-]$/
+    console.log(reg9.test('a'));//false
+    console.log(reg9.test('B'));//false
+    console.log(reg9.test(8));//false
+    console.log(reg9.test('-'));//false
+    console.log(reg9.test('_'));//false
+    console.log((reg9.test('!')));//true
+    console.log('------------------------------------------------');
+    //量词符：用来设定某个模式出现的次数
+    //简单理解：就是让下面的a这个字符出现的次数
+    var rg1 = /^a$/
+    //* 相当于>=0,可以出现0次或者很多次
+    var rg1 = /^a*$/
+    console.log(rg1.test(''));//true
+    console.log(rg1.test('a'));//true
+    console.log(rg1.test('aaaa')); //true
+    //+ 相当于>=1,可以出现1次或者很多次
+    var rg1 = /^a+$/
+    console.log(rg1.test(''));//false
+    console.log(rg1.test('a'));//true
+    console.log(rg1.test('aaaa')); //true
+    //? 相当于1||0
+    var rg1 = /^a?$/
+    console.log(rg1.test(''));//true
+    console.log(rg1.test('a'));//true
+    console.log(rg1.test('aaaa')); //false
+    //{3}就是重复3次
+    var rg1 = /^a{3}$/
+    console.log(rg1.test(''));//false
+    console.log(rg1.test('a'));//false
+    console.log(rg1.test('aaaa')); //false
+    console.log(rg1.test('aaa'));//true
+    //{3,}大于等于3
+    var rg1 = /^a{3,}$/
+    console.log(rg1.test(''));//false
+    console.log(rg1.test('a'));//false
+    console.log(rg1.test('aaaa')); //true
+    console.log(rg1.test('aaa'));//true
+    //{3.6}大于等于3，小于等于6
+    var rg1 = /^a{3,6}$/
+    console.log(rg1.test(''));//false
+    console.log(rg1.test('a'));//false
+    console.log(rg1.test('aaaa')); //true
+    console.log(rg1.test('aaa'));//true
+    console.log(rg1.test('aaaaaaaaa'));//false
+    console.log('-----------------------------------------');
+    var rg2 = /^[a-zA-Z0-9]{6,16}$/
+    console.log(rg2.test('zhaojiannan123')); //true
+    console.log(rg2.test('andy_!red'));//false
+    console.log('-------------------------------------------');
+    //中括号 字符集合，匹配方括号中的任意字符
+    var rg3 = /^[abc]$/    
+    console.log(rg3.test('a'))//true
+    console.log(rg3.test('ab'))//false  
+    console.log('--------------------------------------------')
+    //大括号 量词符，里面表示重复次数
+    var rg4 = /^abc{3}$/  //它是让c重复三次
+    console.log(rg4.test('abc'))//false
+    console.log(rg4.test('abccc'))//true
+    console.log('--------------------------------------------')
+    //小括号 表示优先级
+    var rg5 = /^(abc){3}$/  //它是让abc重复三次
+    console.log(rg5.test('abc'))//false
+    console.log(rg5.test('abcabcabc'))//true
+  </script>
+ 
+</body>
+</html>
